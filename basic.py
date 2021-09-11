@@ -107,6 +107,7 @@ class Lexer:
 
         return tokens, None
 
+    # Increment dot count if a period is detected anywhere in the number.
     def make_number(self):
         num_str = ''
         dot_count = 0
@@ -116,11 +117,15 @@ class Lexer:
                 if dot_count == 1: break
                 dot_count += 1
                 num_str += '.'
+            # If no dots are detected, add the current number to the string.
             else:
                 num_str += self.current_char
+            # Move forward one.
             self.advance()
+        # Integers: return the token TT_INT and the int version of the num_str.
         if dot_count == 0:
             return Token(TT_INT, int(num_str))
+        # If a number is not an integer it must be a float.
         else:
             return Token(TT_FLOAT, float(num_str))
 
